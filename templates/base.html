@@ -15,7 +15,8 @@
             <a href="{{ url_for('index') }}" class="logo">
                 Expresso <span class="destaque">Itaporanga</span>
             </a>
-            <ul class="nav-menu">
+            <button class="mobile-menu-toggle show-mobile" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="{{ url_for('index') }}" {% if request.endpoint == 'index' %}class="active"{% endif %}>Início</a></li>
                 <li><a href="{{ url_for('sobre') }}" {% if request.endpoint == 'sobre' %}class="active"{% endif %}>Sobre Nós</a></li>
                 <li><a href="{{ url_for('servicos') }}" {% if request.endpoint == 'servicos' %}class="active"{% endif %}>Serviços</a></li>
@@ -53,6 +54,35 @@
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block extra_js %}{% endblock %}
+    
+    <script>
+    // Função para toggle do menu mobile
+    function toggleMobileMenu() {
+        const navMenu = document.getElementById('nav-menu');
+        navMenu.classList.toggle('active');
+    }
+    
+    // Fechar menu ao clicar em um link
+    document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelectorAll('.nav-menu a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.getElementById('nav-menu');
+                navMenu.classList.remove('active');
+            });
+        });
+        
+        // Fechar menu ao clicar fora
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('nav-menu');
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
+    });
+    </script>
 </body>
 </html>
 
