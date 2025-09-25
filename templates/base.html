@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Expresso Itaporanga{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% block header %}
+    <header class="header-institucional">
+        <nav class="nav-container">
+            <a href="{{ url_for('index') }}" class="logo">
+                Expresso <span class="destaque">Itaporanga</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('index') }}" {% if request.endpoint == 'index' %}class="active"{% endif %}>Início</a></li>
+                <li><a href="{{ url_for('sobre') }}" {% if request.endpoint == 'sobre' %}class="active"{% endif %}>Sobre Nós</a></li>
+                <li><a href="{{ url_for('servicos') }}" {% if request.endpoint == 'servicos' %}class="active"{% endif %}>Serviços</a></li>
+                <li><a href="{{ url_for('contato') }}" {% if request.endpoint == 'contato' %}class="active"{% endif %}>Contato</a></li>
+                <li><a href="{{ url_for('gestao_login') }}" {% if 'gestao' in request.endpoint %}class="active"{% endif %}>Gestão de Entregas</a></li>
+            </ul>
+        </nav>
+    </header>
+    {% endblock %}
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container" style="padding-top: 1rem;">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block footer %}
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Expresso Itaporanga - Todos os direitos reservados</p>
+            <p class="footer-slogan">"Servir com paixão, viver como exemplo"</p>
+        </div>
+    </footer>
+    {% endblock %}
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+

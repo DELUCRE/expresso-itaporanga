@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block title %}Rastreamento - Expresso Itaporanga{% endblock %}
+
+{% block content %}
+<section class="hero" style="padding: 3rem 0;">
+    <div class="hero-content">
+        <h1>Rastreamento de Encomendas</h1>
+        <p>Acompanhe sua entrega em tempo real</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <div style="background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); text-align: center;">
+                <div style="background: var(--cinza-claro); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; font-size: 2rem;">🔍</div>
+                
+                <h2 style="color: var(--azul-principal); margin-bottom: 1rem;">Rastrear Encomenda</h2>
+                <p style="color: #666; margin-bottom: 2rem;">Digite o código de rastreamento para acompanhar o status da sua entrega</p>
+                
+                <form id="formRastreamento" style="margin-bottom: 2rem;">
+                    <div class="form-group" style="text-align: left;">
+                        <label for="codigo">Código de Rastreamento</label>
+                        <input type="text" id="codigo" name="codigo" class="form-control" placeholder="Ex: EI12345678" required style="text-align: center; font-size: 1.2rem; font-weight: bold; letter-spacing: 2px;">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; font-size: 1.1rem;">🔍 Rastrear Encomenda</button>
+                </form>
+                
+                <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--azul-principal); text-align: left;">
+                    <h4 style="color: var(--azul-principal); margin-bottom: 1rem;">ℹ️ Como rastrear:</h4>
+                    <ul style="color: #666; margin: 0; padding-left: 1.5rem;">
+                        <li>Digite o código de rastreamento (formato: EI + 8 números)</li>
+                        <li>O código foi enviado por SMS/email quando a entrega foi criada</li>
+                        <li>Você pode acompanhar o status em tempo real</li>
+                        <li>Em caso de dúvidas, entre em contato conosco</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Resultado do Rastreamento -->
+<section id="resultadoRastreamento" style="display: none;">
+    <div class="container">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                <h3 style="color: var(--azul-principal); margin-bottom: 1.5rem; text-align: center;">📦 Detalhes da Entrega</h3>
+                <div id="detalhesEntrega"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" style="background: var(--cinza-claro);">
+    <div class="container">
+        <h2 class="section-title">Status de Entrega</h2>
+        <p style="text-align: center; color: #666; margin-bottom: 3rem;">Entenda o que significa cada status da sua encomenda</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div style="background: #fff3cd; color: #856404; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">📋</div>
+                <h3 style="color: #856404;">Pendente</h3>
+                <p>Entrega cadastrada no sistema, aguardando coleta ou processamento.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div style="background: #d1ecf1; color: #0c5460; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">🚚</div>
+                <h3 style="color: #0c5460;">Em Trânsito</h3>
+                <p>Encomenda coletada e em transporte para o destino final.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div style="background: #d4edda; color: #155724; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">✅</div>
+                <h3 style="color: #155724;">Entregue</h3>
+                <p>Encomenda entregue com sucesso no endereço de destino.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div style="background: #f8d7da; color: #721c24; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;">↩️</div>
+                <h3 style="color: #721c24;">Devolvida</h3>
+                <p>Entrega não foi possível, encomenda retornando ao remetente.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div style="text-align: center;">
+            <h2 style="color: var(--azul-principal); margin-bottom: 1rem;">Não encontrou sua encomenda?</h2>
+            <p style="color: #666; margin-bottom: 2rem; font-size: 1.1rem;">
+                Entre em contato conosco para verificar o status da sua entrega
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('contato') }}" class="btn-primary">📞 Falar com Atendimento</a>
+                <a href="https://wa.me/5511999999999" class="btn-primary" style="background: #25d366;">💬 WhatsApp</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.getElementById('formRastreamento').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const codigo = document.getElementById('codigo').value.trim().toUpperCase();
+    
+    if (!codigo) {
+        alert('Por favor, digite o código de rastreamento');
+        return;
+    }
+    
+    // Simular busca na API
+    buscarEntrega(codigo);
+});
+
+function buscarEntrega(codigo) {
+    // Mostrar loading
+    const btn = document.querySelector('button[type="submit"]');
+    const textoOriginal = btn.innerHTML;
+    btn.innerHTML = '🔄 Buscando...';
+    btn.disabled = true;
+    
+    // Simular requisição à API
+    fetch(`/api/rastrear/${codigo}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.encontrado) {
+                mostrarResultado(data);
+            } else {
+                mostrarErro(codigo);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            mostrarErro(codigo);
+        })
+        .finally(() => {
+            btn.innerHTML = textoOriginal;
+            btn.disabled = false;
+        });
+}
+
+function mostrarResultado(data) {
+    const resultado = document.getElementById('resultadoRastreamento');
+    const detalhes = document.getElementById('detalhesEntrega');
+    
+    const statusClass = {
+        'pendente': 'status-pendente',
+        'em_transito': 'status-em-transito',
+        'entregue': 'status-entregue',
+        'devolvida': 'status-devolvida'
+    };
+    
+    const statusIcon = {
+        'pendente': '📋',
+        'em_transito': '🚚',
+        'entregue': '✅',
+        'devolvida': '↩️'
+    };
+    
+    detalhes.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div>
+                <h4 style="color: var(--azul-principal); margin-bottom: 0.5rem;">Código de Rastreamento</h4>
+                <p style="font-size: 1.2rem; font-weight: bold; color: var(--azul-principal);">${data.codigo}</p>
+            </div>
+            <div>
+                <h4 style="color: var(--azul-principal); margin-bottom: 0.5rem;">Status Atual</h4>
+                <span class="status-badge ${statusClass[data.status]}" style="font-size: 1rem;">
+                    ${statusIcon[data.status]} ${data.status.replace('_', ' ').toUpperCase()}
+                </span>
+            </div>
+            <div>
+                <h4 style="color: var(--azul-principal); margin-bottom: 0.5rem;">Destinatário</h4>
+                <p>${data.destinatario}</p>
+            </div>
+            <div>
+                <h4 style="color: var(--azul-principal); margin-bottom: 0.5rem;">Cidade de Destino</h4>
+                <p>${data.cidade_destino}</p>
+            </div>
+        </div>
+        
+        <div style="background: var(--cinza-claro); padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--azul-principal);">
+            <h4 style="color: var(--azul-principal); margin-bottom: 1rem;">📅 Histórico da Entrega</h4>
+            <div style="border-left: 3px solid var(--laranja-destaque); padding-left: 1rem;">
+                <div style="margin-bottom: 1rem;">
+                    <strong>${data.data_criacao}</strong> - Entrega cadastrada no sistema
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <strong>Hoje</strong> - Status atual: ${data.status.replace('_', ' ')}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    resultado.style.display = 'block';
+    resultado.scrollIntoView({ behavior: 'smooth' });
+}
+
+function mostrarErro(codigo) {
+    const resultado = document.getElementById('resultadoRastreamento');
+    const detalhes = document.getElementById('detalhesEntrega');
+    
+    detalhes.innerHTML = `
+        <div style="text-align: center; padding: 2rem;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">❌</div>
+            <h3 style="color: #721c24; margin-bottom: 1rem;">Encomenda não encontrada</h3>
+            <p style="color: #666; margin-bottom: 2rem;">
+                O código <strong>${codigo}</strong> não foi encontrado em nosso sistema.
+            </p>
+            <div style="background: #f8d7da; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #721c24; text-align: left;">
+                <h4 style="color: #721c24; margin-bottom: 1rem;">Possíveis motivos:</h4>
+                <ul style="color: #721c24; margin: 0; padding-left: 1.5rem;">
+                    <li>Código digitado incorretamente</li>
+                    <li>Entrega ainda não foi cadastrada no sistema</li>
+                    <li>Código muito antigo (mais de 90 dias)</li>
+                </ul>
+            </div>
+            <div style="margin-top: 2rem;">
+                <a href="${window.location.href}" class="btn-primary" style="margin-right: 1rem;">🔄 Tentar Novamente</a>
+                <a href="/contato" class="btn-primary" style="background: #6c757d;">📞 Falar com Atendimento</a>
+            </div>
+        </div>
+    `;
+    
+    resultado.style.display = 'block';
+    resultado.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Formatar código automaticamente
+document.getElementById('codigo').addEventListener('input', function(e) {
+    let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (value.length > 2 && !value.startsWith('EI')) {
+        value = 'EI' + value.substring(2);
+    }
+    if (value.length > 10) {
+        value = value.substring(0, 10);
+    }
+    e.target.value = value;
+});
+</script>
+{% endblock %}
+

@@ -1,0 +1,54 @@
+{% extends "gestao/base.html" %}
+
+{% block title %}Dashboard - Sistema de Gestão - Expresso Itaporanga{% endblock %}
+
+{% block content %}
+<h1 class="dashboard-title">Dashboard - Gestão Logística</h1>
+<p style="color: #666; margin-bottom: 2rem;">Bem-vindo, {{ session.username }}! Aqui está o resumo das operações.</p>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.total }}</div>
+        <div class="stat-label">Total de Entregas</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.pendentes }}</div>
+        <div class="stat-label">Pendentes</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.em_transito }}</div>
+        <div class="stat-label">Em Trânsito</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.entregues }}</div>
+        <div class="stat-label">Entregues</div>
+    </div>
+</div>
+
+<div class="actions-section">
+    <h2 class="actions-title">Ações Rápidas</h2>
+    <div class="actions-grid">
+        <a href="{{ url_for('nova_entrega') }}" class="action-btn">
+            📦 Nova Entrega
+        </a>
+        <a href="{{ url_for('listar_entregas') }}" class="action-btn">
+            📋 Ver Todas as Entregas
+        </a>
+        <a href="{{ url_for('relatorios') }}" class="action-btn">
+            📊 Relatórios
+        </a>
+    </div>
+</div>
+
+{% if stats.total == 0 %}
+<div style="text-align: center; margin-top: 3rem; padding: 2rem; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+    <h3 style="color: var(--azul-principal); margin-bottom: 1rem;">Nenhuma entrega cadastrada</h3>
+    <p style="color: #666; margin-bottom: 2rem;">Comece criando sua primeira entrega no sistema.</p>
+    <a href="{{ url_for('nova_entrega') }}" class="btn-primary">📦 Criar Primeira Entrega</a>
+</div>
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,175 @@
+{% extends "gestao/base.html" %}
+
+{% block title %}Relatórios - Sistema de Gestão - Expresso Itaporanga{% endblock %}
+
+{% block content %}
+<h1 class="dashboard-title">📊 Relatório de Eficiência</h1>
+<p style="color: #666; margin-bottom: 2rem;">Dashboard com indicadores de desempenho e análises operacionais.</p>
+
+<!-- Estatísticas Principais -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ dados.total }}</div>
+        <div class="stat-label">Total de Entregas</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-number">{{ dados.entregues }}</div>
+        <div class="stat-label">Entregas Concluídas</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-number">{{ dados.taxa_sucesso }}%</div>
+        <div class="stat-label">Taxa de Sucesso</div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-number">24h</div>
+        <div class="stat-label">Tempo Médio</div>
+    </div>
+</div>
+
+<!-- Distribuição por Status -->
+<div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+    <h3 style="color: var(--azul-principal); margin-bottom: 1.5rem;">Distribuição por Status</h3>
+    <div class="stats-grid">
+        <div class="stat-card" style="border-left-color: #ffc107;">
+            <div class="stat-number" style="color: #ffc107;">{{ dados.pendentes }}</div>
+            <div class="stat-label">Pendentes</div>
+        </div>
+        
+        <div class="stat-card" style="border-left-color: #17a2b8;">
+            <div class="stat-number" style="color: #17a2b8;">{{ dados.em_transito }}</div>
+            <div class="stat-label">Em Trânsito</div>
+        </div>
+        
+        <div class="stat-card" style="border-left-color: #28a745;">
+            <div class="stat-number" style="color: #28a745;">{{ dados.entregues }}</div>
+            <div class="stat-label">Entregues</div>
+        </div>
+        
+        <div class="stat-card" style="border-left-color: #dc3545;">
+            <div class="stat-number" style="color: #dc3545;">{{ dados.devolvidas }}</div>
+            <div class="stat-label">Devolvidas</div>
+        </div>
+    </div>
+</div>
+
+<!-- Qualidade do Serviço -->
+<div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+    <h3 style="color: var(--azul-principal); margin-bottom: 1.5rem;">Qualidade do Serviço</h3>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">95%</div>
+            <div class="stat-label">Taxa de Entrega no Prazo</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-number">3%</div>
+            <div class="stat-label">Taxa de Devolução</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-number">4.8/5.0</div>
+            <div class="stat-label">Satisfação do Cliente</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-number">92%</div>
+            <div class="stat-label">Eficiência Operacional</div>
+        </div>
+    </div>
+</div>
+
+<!-- Análise Detalhada -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+    <!-- Tendências -->
+    <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+        <h4 style="color: var(--azul-principal); margin-bottom: 1rem;">📈 Tendências</h4>
+        <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 0.8rem; padding: 0.5rem; background: #e8f5e8; border-radius: 5px;">
+                <span style="color: #28a745;">↗</span> Aumento de 15% nas entregas este mês
+            </li>
+            <li style="margin-bottom: 0.8rem; padding: 0.5rem; background: #e8f5e8; border-radius: 5px;">
+                <span style="color: #28a745;">↗</span> Melhoria de 5% no tempo médio de entrega
+            </li>
+            <li style="margin-bottom: 0.8rem; padding: 0.5rem; background: #fff3cd; border-radius: 5px;">
+                <span style="color: #856404;">→</span> Taxa de devolução estável
+            </li>
+            <li style="margin-bottom: 0.8rem; padding: 0.5rem; background: #e8f5e8; border-radius: 5px;">
+                <span style="color: #28a745;">↗</span> Satisfação do cliente em alta
+            </li>
+        </ul>
+    </div>
+
+    <!-- Pontos de Atenção -->
+    <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+        <h4 style="color: var(--azul-principal); margin-bottom: 1rem;">⚠️ Pontos de Atenção</h4>
+        <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 0.8rem; padding: 0.5rem; background: #f8d7da; border-radius: 5px;">
+                <span style="color: #721c24;">●</span> 2 entregas com atraso superior a 48h
+            </li>
+            <li style="margin-bottom: 0.8rem; padding: 0.5rem; background: #fff3cd; border-radius: 5px;">
+                <span style="color: #856404;">●</span> Pico de demanda previsto para próxima semana
+            </li>
+            <li style="margin-bottom: 0.8rem; padding: 0.5rem; background: #d1ecf1; border-radius: 5px;">
+                <span style="color: #0c5460;">●</span> Necessidade de otimização de rotas
+            </li>
+            <li style="margin-bottom: 0.8rem; padding: 0.5rem; background: #d4edda; border-radius: 5px;">
+                <span style="color: #155724;">●</span> Sistema operando dentro da normalidade
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Metas Atingidas -->
+<div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-top: 2rem;">
+    <h4 style="color: var(--azul-principal); margin-bottom: 1rem;">🎯 Metas Atingidas</h4>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <div style="padding: 1rem; background: #d4edda; border-radius: 8px; text-align: center;">
+            <div style="color: #155724; font-size: 1.5rem; margin-bottom: 0.5rem;">✓</div>
+            <div style="color: #155724; font-weight: 600;">Taxa de entrega > 95%</div>
+        </div>
+        <div style="padding: 1rem; background: #d4edda; border-radius: 8px; text-align: center;">
+            <div style="color: #155724; font-size: 1.5rem; margin-bottom: 0.5rem;">✓</div>
+            <div style="color: #155724; font-weight: 600;">Tempo médio < 48h</div>
+        </div>
+        <div style="padding: 1rem; background: #d4edda; border-radius: 8px; text-align: center;">
+            <div style="color: #155724; font-size: 1.5rem; margin-bottom: 0.5rem;">✓</div>
+            <div style="color: #155724; font-weight: 600;">Satisfação > 4.5/5.0</div>
+        </div>
+        <div style="padding: 1rem; background: #d4edda; border-radius: 8px; text-align: center;">
+            <div style="color: #155724; font-size: 1.5rem; margin-bottom: 0.5rem;">✓</div>
+            <div style="color: #155724; font-weight: 600;">Zero acidentes reportados</div>
+        </div>
+    </div>
+</div>
+
+<!-- Exportar Relatórios -->
+<div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-top: 2rem; text-align: center;">
+    <h4 style="color: var(--azul-principal); margin-bottom: 1.5rem;">📄 Exportar Relatórios</h4>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <button class="btn-primary" onclick="exportarPDF()">📄 Exportar PDF</button>
+        <button class="btn-primary" onclick="exportarExcel()">📊 Exportar Excel</button>
+        <button class="btn-primary" onclick="imprimir()">🖨️ Imprimir</button>
+    </div>
+    <p style="color: #666; margin-top: 1rem; font-size: 0.9rem;">
+        Relatórios gerados em tempo real com base nos dados atuais do sistema.
+    </p>
+</div>
+
+<script>
+function exportarPDF() {
+    alert('Funcionalidade de exportação PDF será implementada');
+}
+
+function exportarExcel() {
+    alert('Funcionalidade de exportação Excel será implementada');
+}
+
+function imprimir() {
+    window.print();
+}
+</script>
+{% endblock %}
+

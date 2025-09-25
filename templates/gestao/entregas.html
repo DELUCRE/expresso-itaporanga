@@ -1,0 +1,100 @@
+{% extends "gestao/base.html" %}
+
+{% block title %}Entregas - Sistema de Gestão - Expresso Itaporanga{% endblock %}
+
+{% block content %}
+<h1 class="dashboard-title">📋 Gestão de Entregas</h1>
+<p style="color: #666; margin-bottom: 2rem;">Visualize e gerencie todas as entregas cadastradas no sistema.</p>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div>
+        <strong>Total de entregas:</strong> {{ entregas|length }}
+    </div>
+    <a href="{{ url_for('nova_entrega') }}" class="btn-primary">📦 Nova Entrega</a>
+</div>
+
+{% if entregas %}
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Remetente</th>
+                <th>Destinatário</th>
+                <th>Origem → Destino</th>
+                <th>Produto</th>
+                <th>Status</th>
+                <th>Data</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entrega in entregas %}
+            <tr>
+                <td>
+                    <strong style="color: var(--azul-principal);">{{ entrega.codigo_rastreamento }}</strong>
+                </td>
+                <td>{{ entrega.remetente_nome }}</td>
+                <td>{{ entrega.destinatario_nome }}</td>
+                <td>
+                    <small>{{ entrega.remetente_cidade }} → {{ entrega.destinatario_cidade }}</small>
+                </td>
+                <td>{{ entrega.tipo_produto|title }}</td>
+                <td>
+                    <span class="status-badge status-{{ entrega.status.replace(' ', '-') }}">
+                        {{ entrega.status|title }}
+                    </span>
+                </td>
+                <td>{{ entrega.data_criacao.strftime('%d/%m/%Y %H:%M') }}</td>
+                <td>
+                    <button onclick="verDetalhes('{{ entrega.id }}')" style="background: var(--azul-principal); color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">
+                        Ver Detalhes
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div style="text-align: center; padding: 3rem; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+    <h3 style="color: var(--azul-principal); margin-bottom: 1rem;">Nenhuma entrega encontrada</h3>
+    <p style="color: #666; margin-bottom: 2rem;">Comece criando sua primeira entrega no sistema.</p>
+    <a href="{{ url_for('nova_entrega') }}" class="btn-primary">📦 Criar Primeira Entrega</a>
+</div>
+{% endif %}
+
+<!-- Modal para detalhes da entrega -->
+<div id="modalDetalhes" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 15px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
+        <h3 style="color: var(--azul-principal); margin-bottom: 1rem;">Detalhes da Entrega</h3>
+        <div id="conteudoDetalhes"></div>
+        <button onclick="fecharModal()" style="background: var(--azul-principal); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 5px; cursor: pointer; margin-top: 1rem;">Fechar</button>
+    </div>
+</div>
+
+<script>
+function verDetalhes(entregaId) {
+    // Aqui você pode fazer uma requisição AJAX para buscar os detalhes
+    // Por simplicidade, vou mostrar um modal básico
+    document.getElementById('conteudoDetalhes').innerHTML = `
+        <p><strong>ID:</strong> ${entregaId}</p>
+        <p><strong>Funcionalidade:</strong> Detalhes completos da entrega</p>
+        <p><em>Esta funcionalidade pode ser expandida para mostrar histórico completo, permitir alteração de status, etc.</em></p>
+    `;
+    document.getElementById('modalDetalhes').style.display = 'block';
+}
+
+function fecharModal() {
+    document.getElementById('modalDetalhes').style.display = 'none';
+}
+
+// Fechar modal clicando fora
+document.getElementById('modalDetalhes').onclick = function(e) {
+    if (e.target === this) {
+        fecharModal();
+    }
+}
+</script>
+{% endblock %}
+

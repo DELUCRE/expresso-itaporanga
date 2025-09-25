@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}Serviços - Expresso Itaporanga{% endblock %}
+
+{% block content %}
+<section class="hero" style="padding: 3rem 0;">
+    <div class="hero-content">
+        <h1>Nossos Serviços</h1>
+        <p>Soluções completas em transporte e logística para suas necessidades</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Serviços Principais</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card" style="border-top-color: var(--azul-principal);">
+                <div class="feature-icon">📦</div>
+                <h3>Transporte de Encomendas</h3>
+                <p>Envio seguro de encomendas pessoais entre o Nordeste e São Paulo com rastreamento em tempo real.</p>
+                <ul style="text-align: left; margin-top: 1rem; color: #666;">
+                    <li>Documentos e correspondências</li>
+                    <li>Roupas e objetos pessoais</li>
+                    <li>Eletrônicos e equipamentos</li>
+                    <li>Medicamentos e produtos de saúde</li>
+                </ul>
+                <div style="margin-top: 1.5rem;">
+                    <strong style="color: var(--azul-principal);">A partir de R$ 25,00</strong>
+                </div>
+            </div>
+            
+            <div class="feature-card" style="border-top-color: var(--laranja-destaque);">
+                <div class="feature-icon">🚚</div>
+                <h3>Transporte de Cargas</h3>
+                <p>Soluções logísticas para empresas com cargas de diversos tamanhos e tipos de mercadorias.</p>
+                <ul style="text-align: left; margin-top: 1rem; color: #666;">
+                    <li>Cargas fracionadas</li>
+                    <li>Cargas completas (truck/carreta)</li>
+                    <li>Produtos alimentícios</li>
+                    <li>Materiais de construção</li>
+                </ul>
+                <div style="margin-top: 1.5rem;">
+                    <strong style="color: var(--laranja-destaque);">Cotação personalizada</strong>
+                </div>
+            </div>
+            
+            <div class="feature-card" style="border-top-color: #28a745;">
+                <div class="feature-icon">📍</div>
+                <h3>Coleta e Entrega</h3>
+                <p>Serviço de coleta no local de origem e entrega no destino final com agendamento flexível.</p>
+                <ul style="text-align: left; margin-top: 1rem; color: #666;">
+                    <li>Coleta domiciliar</li>
+                    <li>Coleta empresarial</li>
+                    <li>Entrega expressa</li>
+                    <li>Entrega agendada</li>
+                </ul>
+                <div style="margin-top: 1.5rem;">
+                    <strong style="color: #28a745;">Incluso no frete</strong>
+                </div>
+            </div>
+            
+            <div class="feature-card" style="border-top-color: #17a2b8;">
+                <div class="feature-icon">📊</div>
+                <h3>Gestão Logística</h3>
+                <p>Sistema completo de gestão para empresas com controle total de entregas e relatórios.</p>
+                <ul style="text-align: left; margin-top: 1rem; color: #666;">
+                    <li>Dashboard em tempo real</li>
+                    <li>Relatórios de desempenho</li>
+                    <li>API de integração</li>
+                    <li>Suporte técnico dedicado</li>
+                </ul>
+                <div style="margin-top: 1.5rem;">
+                    <a href="{{ url_for('gestao_login') }}" class="btn-primary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Acessar Sistema</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" style="background: var(--cinza-claro);">
+    <div class="container">
+        <h2 class="section-title">Rotas Atendidas</h2>
+        
+        <!-- Destaque da Especialização -->
+        <div style="background: linear-gradient(135deg, var(--azul-principal), var(--laranja-destaque)); color: white; padding: 2rem; border-radius: 15px; text-align: center; margin-bottom: 3rem;">
+            <h3 style="color: white; margin-bottom: 1rem; font-size: 1.8rem;">🌵 Especialistas no Sertão Nordestino</h3>
+            <p style="font-size: 1.2rem; margin-bottom: 1.5rem; opacity: 0.95;">
+                Atendemos toda área do sertão com conhecimento local e experiência especializada
+            </p>
+            <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 10px;">
+                    <strong>📍 Vale do Piancó - PB</strong>
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 10px;">
+                    <strong>📍 Sertão da PB</strong>
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 10px;">
+                    <strong>📍 São Francisco - PB</strong>
+                </div>
+            </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                <h3 style="color: var(--azul-principal); margin-bottom: 1rem;">🌅 Nordeste → São Paulo</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;">📍 Recife - PE</li>
+                    <li style="margin-bottom: 0.5rem;">📍 Salvador - BA</li>
+                    <li style="margin-bottom: 0.5rem;">📍 Fortaleza - CE</li>
+                    <li style="margin-bottom: 0.5rem;">📍 João Pessoa - PB</li>
+                    <li style="margin-bottom: 0.5rem;">📍 Maceió - AL</li>
+                    <li style="margin-bottom: 0.5rem;">📍 Aracaju - SE</li>
+                    <li style="margin-bottom: 0.5rem;">📍 Natal - RN</li>
+                    <li style="margin-bottom: 0.5rem;">📍 Teresina - PI</li>
+                </ul>
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e0e0;">
+                    <strong style="color: var(--azul-principal);">Prazo: 24 a 72 horas</strong>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                <h3 style="color: var(--laranja-destaque); margin-bottom: 1rem;">🏙️ São Paulo → Nordeste</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;">📍 São Paulo - Capital</li>
+                    <li style="margin-bottom: 0.5rem;">📍 Guarulhos - SP</li>
+                    <li style="margin-bottom: 0.5rem;">📍 Osasco - SP</li>
+                    <li style="margin-bottom: 0.5rem;">📍 Santo André - SP</li>
+                    <li style="margin-bottom: 0.5rem;">📍 São Bernardo - SP</li>
+                    <li style="margin-bottom: 0.5rem;">📍 Campinas - SP</li>
+                    <li style="margin-bottom: 0.5rem;">📍 Santos - SP</li>
+                    <li style="margin-bottom: 0.5rem;">📍 Região Metropolitana</li>
+                </ul>
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e0e0;">
+                    <strong style="color: var(--laranja-destaque);">Prazo: 24 a 72 horas</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Diferenciais do Nosso Serviço</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Segurança Garantida</h3>
+                <p>Todas as cargas são protegidas por seguro e acompanhadas por rastreamento GPS em tempo real.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Entrega Rápida</h3>
+                <p>Frota própria e rotas otimizadas garantem entregas em até 10 dias entre origem e destino.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Rastreamento Online</h3>
+                <p>Acompanhe sua encomenda em tempo real através do nosso sistema de rastreamento.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Preços Competitivos</h3>
+                <p>Tarifas justas e transparentes, sem taxas ocultas. Pagamento facilitado em diversas modalidades.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎧</div>
+                <h3>Atendimento Personalizado</h3>
+                <p>Atendimento personalizado para entender e atender as necessidades específicas do seu negócio.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Carga Assegurada Porto Seguro</h3>
+                <p>Todas as cargas são protegidas por seguro Porto Seguro, garantindo total tranquilidade no transporte.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" style="background: var(--azul-principal); color: white;">
+    <div class="container">
+        <div style="text-align: center;">
+            <h2 style="color: white; margin-bottom: 1rem;">Precisa de um Orçamento?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">
+                Entre em contato conosco e receba uma cotação personalizada para suas necessidades de transporte.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('contato') }}" class="btn-primary">Solicitar Orçamento</a>
+                <a href="{{ url_for('rastreamento') }}" class="btn-primary" style="background: transparent; border: 2px solid var(--laranja-destaque);">Rastrear Encomenda</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

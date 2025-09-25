@@ -1,0 +1,107 @@
+{% extends "gestao/base.html" %}
+
+{% block title %}Nova Entrega - Sistema de Gestão - Expresso Itaporanga{% endblock %}
+
+{% block content %}
+<h1 class="dashboard-title">📦 Cadastrar Nova Entrega</h1>
+<p style="color: #666; margin-bottom: 2rem;">Preencha todos os dados da entrega para gerar o código de rastreamento.</p>
+
+<form method="POST" action="{{ url_for('criar_entrega') }}" class="form-container">
+    <!-- Dados do Remetente -->
+    <div class="form-section">
+        <h3 class="form-section-title">👤 Dados do Remetente</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="remetente_nome">Nome Completo *</label>
+                <input type="text" id="remetente_nome" name="remetente_nome" class="form-control" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="remetente_endereco">Endereço Completo *</label>
+                <textarea id="remetente_endereco" name="remetente_endereco" class="form-control" rows="3" placeholder="Rua, número, bairro, cidade, CEP" required></textarea>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="remetente_cidade">Cidade de Origem *</label>
+                <input type="text" id="remetente_cidade" name="remetente_cidade" class="form-control" placeholder="Ex: São Paulo - SP" required>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dados do Destinatário -->
+    <div class="form-section">
+        <h3 class="form-section-title">📍 Dados do Destinatário</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="destinatario_nome">Nome Completo *</label>
+                <input type="text" id="destinatario_nome" name="destinatario_nome" class="form-control" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="destinatario_endereco">Endereço Completo *</label>
+                <textarea id="destinatario_endereco" name="destinatario_endereco" class="form-control" rows="3" placeholder="Rua, número, bairro, cidade, CEP" required></textarea>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="destinatario_cidade">Cidade de Destino *</label>
+                <input type="text" id="destinatario_cidade" name="destinatario_cidade" class="form-control" placeholder="Ex: Recife - PE" required>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dados da Mercadoria -->
+    <div class="form-section">
+        <h3 class="form-section-title">📦 Dados da Mercadoria</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="tipo_produto">Tipo de Produto *</label>
+                <select id="tipo_produto" name="tipo_produto" class="form-control" required>
+                    <option value="">Selecione o tipo</option>
+                    <option value="documentos">Documentos</option>
+                    <option value="roupas">Roupas</option>
+                    <option value="eletronicos">Eletrônicos</option>
+                    <option value="alimentos">Alimentos</option>
+                    <option value="medicamentos">Medicamentos</option>
+                    <option value="livros">Livros</option>
+                    <option value="moveis">Móveis</option>
+                    <option value="outros">Outros</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="peso">Peso (kg)</label>
+                <input type="number" id="peso" name="peso" class="form-control" step="0.1" placeholder="Ex: 2.5">
+            </div>
+            <div class="form-group">
+                <label for="valor_declarado">Valor Declarado (R$)</label>
+                <input type="number" id="valor_declarado" name="valor_declarado" class="form-control" step="0.01" placeholder="Ex: 150.00">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="observacoes">Observações</label>
+                <textarea id="observacoes" name="observacoes" class="form-control" rows="3" placeholder="Informações adicionais sobre a entrega"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+        <a href="{{ url_for('dashboard') }}" class="btn-primary" style="background: #6c757d;">← Cancelar</a>
+        <button type="submit" class="btn-primary">📦 Criar Entrega</button>
+    </div>
+</form>
+
+<div style="background: #e3f2fd; padding: 1.5rem; border-radius: 10px; margin-top: 2rem; border-left: 4px solid var(--azul-principal);">
+    <h4 style="color: var(--azul-principal); margin-bottom: 1rem;">ℹ️ Informações Importantes</h4>
+    <ul style="color: #666; margin: 0; padding-left: 1.5rem;">
+        <li>Após criar a entrega, um <strong>código de rastreamento</strong> será gerado automaticamente</li>
+        <li>O prazo estimado de entrega é de <strong>24 a 72 horas</strong></li>
+        <li>Você poderá acompanhar o status da entrega em tempo real</li>
+        <li>O cliente receberá o código de rastreamento para acompanhamento</li>
+    </ul>
+</div>
+{% endblock %}
+

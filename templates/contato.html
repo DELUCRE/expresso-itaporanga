@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block title %}Contato - Expresso Itaporanga{% endblock %}
+
+{% block content %}
+<section class="hero" style="padding: 3rem 0;">
+    <div class="hero-content">
+        <h1>Entre em Contato</h1>
+        <p>Estamos prontos para atender suas necessidades de transporte</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 3rem;">
+            <!-- Informações de Contato -->
+            <div>
+                <h2 style="color: var(--azul-principal); margin-bottom: 2rem;">Fale Conosco</h2>
+                
+                <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                    <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        <div style="background: var(--laranja-destaque); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 1.5rem;">📞</div>
+                        <div>
+                            <h4 style="color: var(--azul-principal); margin-bottom: 0.5rem;">Telefone</h4>
+                            <p style="margin: 0; font-size: 1.1rem; font-weight: 600;">SP: (11) 94036-1071</p>
+                            <p style="margin: 0; font-size: 1.1rem; font-weight: 600;">PB: (83) 99832-3948</p>
+                            <p style="margin: 0; color: #666; font-size: 0.9rem;">WhatsApp disponível</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        <div style="background: var(--laranja-destaque); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 1.5rem;">📧</div>
+                        <div>
+                            <h4 style="color: var(--azul-principal); margin-bottom: 0.5rem;">Email</h4>
+                            <p style="margin: 0; font-size: 1.1rem; font-weight: 600;">comercial@expressoitaporanga.com.br</p>
+                            <p style="margin: 0; color: #666; font-size: 0.9rem;">Resposta em até 2 horas</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        <div style="background: var(--laranja-destaque); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 1.5rem;">💬</div>
+                        <div>
+                            <h4 style="color: var(--azul-principal); margin-bottom: 0.5rem;">WhatsApp</h4>
+                            <p style="margin: 0; font-size: 1.1rem; font-weight: 600;">SP: (11) 94036-1071</p>
+                            <p style="margin: 0; font-size: 1.1rem; font-weight: 600;">PB: (83) 99832-3948</p>
+                            <p style="margin: 0; color: #666; font-size: 0.9rem;">Chat online disponível</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center;">
+                        <div style="background: var(--laranja-destaque); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; font-size: 1.5rem;">📍</div>
+                        <div>
+                            <h4 style="color: var(--azul-principal); margin-bottom: 0.5rem;">Endereço</h4>
+                            <p style="margin: 0; font-size: 1.1rem; font-weight: 600;">SP: Rua Remanso, 12 - Guarulhos - SP</p>
+                            <p style="margin: 0; font-size: 1.1rem; font-weight: 600;">PB: Rod PB 372 S/N - Itaporanga - PB</p>
+                            <p style="margin: 0; color: #666; font-size: 0.9rem;">Matriz e filial</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Horários de Funcionamento -->
+                <div style="background: var(--cinza-claro); padding: 2rem; border-radius: 15px; border-left: 5px solid var(--azul-principal);">
+                    <h4 style="color: var(--azul-principal); margin-bottom: 1rem;">⏰ Horários de Funcionamento</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.95rem;">
+                        <div><strong>Segunda a Sexta:</strong></div>
+                        <div>08:00 às 17:00</div>
+                        <div><strong>Sábado:</strong></div>
+                        <div>Fechado</div>
+                        <div><strong>Domingo:</strong></div>
+                        <div>Fechado</div>
+                        <div><strong>Emergências:</strong></div>
+                        <div>24 horas</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Formulário de Contato -->
+            <div>
+                <h2 style="color: var(--azul-principal); margin-bottom: 2rem;">Envie sua Mensagem</h2>
+                
+                <form style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nome">Nome Completo *</label>
+                            <input type="text" id="nome" name="nome" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telefone">Telefone</label>
+                            <input type="tel" id="telefone" name="telefone" class="form-control" placeholder="(11) 99999-9999">
+                        </div>
+                        <div class="form-group">
+                            <label for="assunto">Assunto *</label>
+                            <select id="assunto" name="assunto" class="form-control" required>
+                                <option value="">Selecione o assunto</option>
+                                <option value="orcamento">Solicitar Orçamento</option>
+                                <option value="rastreamento">Rastreamento de Encomenda</option>
+                                <option value="reclamacao">Reclamação</option>
+                                <option value="sugestao">Sugestão</option>
+                                <option value="parceria">Parceria Comercial</option>
+                                <option value="outros">Outros</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mensagem">Mensagem *</label>
+                        <textarea id="mensagem" name="mensagem" class="form-control" rows="5" placeholder="Descreva sua necessidade ou dúvida..." required></textarea>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        <input type="checkbox" id="aceito" name="aceito" required style="margin-right: 0.5rem;">
+                        <label for="aceito" style="font-size: 0.9rem; color: #666;">
+                            Aceito receber informações sobre serviços e promoções da Expresso Itaporanga
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" style="width: 100%;">📧 Enviar Mensagem</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" style="background: var(--cinza-claro);">
+    <div class="container">
+        <h2 class="section-title">Outras Formas de Contato</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎧</div>
+                <h3>Central de Atendimento</h3>
+                <p>Nossa central está disponível 24 horas para emergências e suporte técnico.</p>
+                <div style="margin-top: 1rem;">
+                    <strong style="color: var(--azul-principal);">SP: (11) 94036-1071</strong><br>
+                    <strong style="color: var(--azul-principal);">PB: (83) 99832-3948</strong>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Redes Sociais</h3>
+                <p>Siga-nos nas redes sociais para novidades, promoções e atualizações.</p>
+                <div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: center;">
+                    <span style="background: #1877f2; color: white; padding: 0.5rem; border-radius: 5px;">Facebook</span>
+                    <span style="background: #1da1f2; color: white; padding: 0.5rem; border-radius: 5px;">Twitter</span>
+                    <span style="background: #e4405f; color: white; padding: 0.5rem; border-radius: 5px;">Instagram</span>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>Rastreamento</h3>
+                <p>Acompanhe sua encomenda em tempo real através do nosso sistema.</p>
+                <div style="margin-top: 1rem;">
+                    <a href="{{ url_for('rastreamento') }}" class="btn-primary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">Rastrear Agora</a>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💼</div>
+                <h3>Atendimento Empresarial</h3>
+                <p>Soluções personalizadas para empresas com atendimento dedicado.</p>
+                <div style="margin-top: 1rem;">
+                    <strong style="color: var(--azul-principal);">comercial@expressoitaporanga.com.br</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" style="background: var(--azul-principal); color: white;">
+    <div class="container">
+        <div style="text-align: center;">
+            <h2 style="color: white; margin-bottom: 1rem;">Precisa de Atendimento Imediato?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">
+                Nossa equipe está sempre pronta para ajudar você com suas necessidades de transporte.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="tel:11940361071" class="btn-primary">📞 SP: (11) 94036-1071</a>
+                <a href="tel:83998323948" class="btn-primary">📞 PB: (83) 99832-3948</a>
+                <a href="https://wa.me/5511940361071" class="btn-primary" style="background: #25d366;">💬 WhatsApp SP</a>
+                <a href="https://wa.me/5583998323948" class="btn-primary" style="background: #25d366;">💬 WhatsApp PB</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Envio do formulário via AJAX
+document.querySelector('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    // Mostrar loading
+    submitBtn.innerHTML = '⏳ Enviando...';
+    submitBtn.disabled = true;
+    
+    fetch('/contato', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('✅ ' + data.message);
+            this.reset();
+        } else {
+            alert('❌ ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('❌ Erro ao enviar mensagem. Tente novamente.');
+    })
+    .finally(() => {
+        // Restaurar botão
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
+});
+</script>
+{% endblock %}
+
