@@ -2,6 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import logging
+import os
+
+# Configurar logging
+logging.basicConfig(level=logging.INFO)
 import secrets
 import sqlite3
 import os
@@ -123,18 +128,27 @@ def gestao_login():
 
 @app.route('/gestao/login', methods=['POST'])
 def login():
-    username = request.form['username']
-    password = request.form['password']
-    
-    usuario = Usuario.query.filter_by(username=username, ativo=True).first()
-    
-    if usuario and check_password_hash(usuario.password_hash, password):
-        session['user_id'] = usuario.id
-        session['username'] = usuario.username
-        session['perfil'] = usuario.perfil
-        return redirect(url_for('dashboard'))
-    else:
-        flash('Usuário ou senha inválidos', 'error')
+    try:
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        if not username or not password:
+            flash('Usuário e senha são obrigatórios', 'error')
+            return redirect(url_for('gestao_login'))
+        
+        usuario = Usuario.query.filter_by(username=username, ativo=True).first()
+        
+        if usuario and check_password_hash(usuario.password_hash, password):
+            session['user_id'] = usuario.id
+            session['username'] = usuario.username
+            session['perfil'] = usuario.perfil
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Usuário ou senha inválidos', 'error')
+            return redirect(url_for('gestao_login'))
+    except Exception as e:
+        print(f"Erro no login: {e}")
+        flash('Erro interno do servidor', 'error')
         return redirect(url_for('gestao_login'))
 
 @app.route('/gestao/logout')
@@ -255,23 +269,31 @@ def api_rastrear(codigo):
 
 def init_db():
     """Inicializar banco de dados"""
-    db.create_all()
-    
-    # Criar usuário admin se não existir
-    admin = Usuario.query.filter_by(username='admin').first()
-    if not admin:
-        admin = Usuario(
-            username='admin',
-            password_hash=generate_password_hash('admin123'),
-            perfil='admin'
-        )
-        db.session.add(admin)
-        db.session.commit()
-        print("Usuário admin criado com sucesso!")
+    try:
+        db.create_all()
+        
+        # Criar usuário admin se não existir
+        admin = Usuario.query.filter_by(username='admin').first()
+        if not admin:
+            admin = Usuario(
+                username='admin',
+                password_hash=generate_password_hash('admin123'),
+                perfil='admin',
+                ativo=True
+            )
+            db.session.add(admin)
+            db.session.commit()
+            print("Usuário admin criado com sucesso!")
+        else:
+            print("Usuário admin já existe")
+    except Exception as e:
+        print(f"Erro ao inicializar banco: {e}")
+
+# Inicializar banco sempre que a aplicação for carregada
+with app.app_context():
+    init_db()
 
 if __name__ == '__main__':
-    with app.app_context():
-        init_db()
     import os
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
