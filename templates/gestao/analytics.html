@@ -1,0 +1,548 @@
+{% extends "gestao/base.html" %}
+
+{% block title %}Análise de Dados - Sistema de Gestão - Expresso Itaporanga{% endblock %}
+
+{% block extra_css %}
+<style>
+    .analytics-container {
+        padding: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    .analytics-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    .analytics-header h1 {
+        color: var(--azul-principal);
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .analytics-header p {
+        color: #666;
+        font-size: 1.1rem;
+    }
+    
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .metric-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        text-align: center;
+        border-left: 5px solid var(--laranja-destaque);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    
+    .metric-value {
+        font-size: 3rem;
+        font-weight: bold;
+        color: var(--azul-principal);
+        margin-bottom: 0.5rem;
+    }
+    
+    .metric-label {
+        font-size: 1.1rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+    
+    .metric-change {
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+    
+    .metric-change.positive {
+        color: #28a745;
+    }
+    
+    .metric-change.negative {
+        color: #dc3545;
+    }
+    
+    .chart-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+    
+    .chart-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--azul-principal);
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    
+    .chart-placeholder {
+        height: 400px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #666;
+        font-size: 1.1rem;
+        border: 2px dashed #dee2e6;
+    }
+    
+    .filters-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+    
+    .filters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        align-items: end;
+    }
+    
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .filter-group label {
+        font-weight: 600;
+        color: var(--azul-principal);
+        margin-bottom: 0.5rem;
+    }
+    
+    .filter-group select,
+    .filter-group input {
+        padding: 0.75rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+    
+    .filter-group select:focus,
+    .filter-group input:focus {
+        border-color: var(--laranja-destaque);
+        outline: none;
+    }
+    
+    .btn-filter {
+        background: var(--laranja-destaque);
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-filter:hover {
+        background: #e67e00;
+        transform: translateY(-2px);
+    }
+    
+    .insights-section {
+        background: linear-gradient(135deg, var(--azul-principal) 0%, #0056b3 100%);
+        color: white;
+        padding: 3rem 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+    }
+    
+    .insights-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .insights-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+    
+    .insight-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2rem;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .insight-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .insight-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .insight-description {
+        font-size: 1rem;
+        line-height: 1.6;
+        opacity: 0.9;
+    }
+    
+    .export-section {
+        text-align: center;
+        margin-top: 3rem;
+    }
+    
+    .btn-export {
+        background: var(--azul-principal);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 0 0.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-export:hover {
+        background: #003366;
+        transform: translateY(-2px);
+    }
+    
+    @media (max-width: 768px) {
+        .analytics-container {
+            padding: 1rem;
+        }
+        
+        .metrics-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .filters-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .insights-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="analytics-container">
+    <div class="analytics-header">
+        <h1>📊 Análise de Dados</h1>
+        <p>Dashboard completo com métricas, gráficos e insights sobre as operações da Expresso Itaporanga</p>
+    </div>
+    
+    <!-- Filtros -->
+    <div class="filters-section">
+        <h3 style="color: var(--azul-principal); margin-bottom: 1.5rem;">🔍 Filtros de Análise</h3>
+        <div class="filters-grid">
+            <div class="filter-group">
+                <label for="periodo">Período</label>
+                <select id="periodo" name="periodo">
+                    <option value="7d">Últimos 7 dias</option>
+                    <option value="30d" selected>Últimos 30 dias</option>
+                    <option value="90d">Últimos 90 dias</option>
+                    <option value="1y">Último ano</option>
+                    <option value="custom">Personalizado</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="todos">Todos os status</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="coletado">Coletado</option>
+                    <option value="em_transito">Em Trânsito</option>
+                    <option value="entregue">Entregue</option>
+                    <option value="cancelado">Cancelado</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="cidade">Cidade de Destino</label>
+                <select id="cidade" name="cidade">
+                    <option value="todas">Todas as cidades</option>
+                    <option value="sao_paulo">São Paulo/SP</option>
+                    <option value="itaporanga">Itaporanga/PB</option>
+                    <option value="campina_grande">Campina Grande/PB</option>
+                    <option value="joao_pessoa">João Pessoa/PB</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <button type="button" class="btn-filter" onclick="aplicarFiltros()">
+                    🔄 Atualizar Dados
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Métricas Principais -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-value" id="total-entregas">1,247</div>
+            <div class="metric-label">Total de Entregas</div>
+            <div class="metric-change positive">+12% vs mês anterior</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-value" id="taxa-sucesso">98.2%</div>
+            <div class="metric-label">Taxa de Sucesso</div>
+            <div class="metric-change positive">+0.8% vs mês anterior</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-value" id="tempo-medio">3.2</div>
+            <div class="metric-label">Tempo Médio (dias)</div>
+            <div class="metric-change negative">+0.3 vs mês anterior</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-value" id="receita-total">R$ 89.5K</div>
+            <div class="metric-label">Receita Total</div>
+            <div class="metric-change positive">+18% vs mês anterior</div>
+        </div>
+    </div>
+    
+    <!-- Gráficos -->
+    <div class="chart-container">
+        <h3 class="chart-title">📈 Entregas por Dia (Últimos 30 dias)</h3>
+        <div class="chart-placeholder" id="chart-entregas-dia">
+            <div>
+                <p>Gráfico de linha mostrando o volume diário de entregas</p>
+                <small>Em uma implementação real, aqui seria integrado Chart.js ou similar</small>
+            </div>
+        </div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+        <div class="chart-container">
+            <h3 class="chart-title">🥧 Distribuição por Status</h3>
+            <div class="chart-placeholder" id="chart-status">
+                <div>
+                    <p>Gráfico de pizza com distribuição por status</p>
+                    <small>Entregue: 85% | Em Trânsito: 10% | Pendente: 5%</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <h3 class="chart-title">🗺️ Top 5 Cidades de Destino</h3>
+            <div class="chart-placeholder" id="chart-cidades">
+                <div>
+                    <p>Gráfico de barras com principais destinos</p>
+                    <small>São Paulo: 45% | Itaporanga: 20% | Campina Grande: 15%</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Insights Inteligentes -->
+    <div class="insights-section">
+        <h2 class="insights-title">🧠 Insights Inteligentes</h2>
+        <div class="insights-grid">
+            <div class="insight-card">
+                <div class="insight-icon">📊</div>
+                <div class="insight-title">Crescimento Consistente</div>
+                <div class="insight-description">
+                    O volume de entregas cresceu 12% no último mês, mantendo a tendência positiva dos últimos 6 meses. 
+                    O crescimento é mais acentuado nas rotas para São Paulo.
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <div class="insight-icon">⚡</div>
+                <div class="insight-title">Eficiência Operacional</div>
+                <div class="insight-description">
+                    A taxa de sucesso de 98.2% está acima da média do setor (95%). 
+                    O tempo médio de entrega de 3.2 dias é competitivo para a rota Nordeste-SP.
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <div class="insight-icon">🎯</div>
+                <div class="insight-title">Oportunidades</div>
+                <div class="insight-description">
+                    Quinta-feira é o dia com maior volume de entregas (18% do total semanal). 
+                    Considere otimizar a capacidade para este dia da semana.
+                </div>
+            </div>
+            
+            <div class="insight-card">
+                <div class="insight-icon">💡</div>
+                <div class="insight-title">Recomendações</div>
+                <div class="insight-description">
+                    Produtos eletrônicos representam 35% do volume mas 55% da receita. 
+                    Investir em marketing para este segmento pode aumentar a rentabilidade.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Análise Detalhada -->
+    <div class="chart-container">
+        <h3 class="chart-title">📋 Análise Detalhada por Período</h3>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                <thead>
+                    <tr style="background: var(--cinza-claro);">
+                        <th style="padding: 1rem; text-align: left; border-bottom: 2px solid #dee2e6;">Período</th>
+                        <th style="padding: 1rem; text-align: center; border-bottom: 2px solid #dee2e6;">Entregas</th>
+                        <th style="padding: 1rem; text-align: center; border-bottom: 2px solid #dee2e6;">Taxa Sucesso</th>
+                        <th style="padding: 1rem; text-align: center; border-bottom: 2px solid #dee2e6;">Tempo Médio</th>
+                        <th style="padding: 1rem; text-align: center; border-bottom: 2px solid #dee2e6;">Receita</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 1rem; border-bottom: 1px solid #dee2e6;">Esta Semana</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">287</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">98.6%</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">3.1 dias</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">R$ 20.8K</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border-bottom: 1px solid #dee2e6;">Semana Passada</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">312</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">97.8%</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">3.3 dias</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">R$ 22.1K</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border-bottom: 1px solid #dee2e6;">Este Mês</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">1,247</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">98.2%</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">3.2 dias</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">R$ 89.5K</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem; border-bottom: 1px solid #dee2e6;">Mês Passado</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">1,113</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">97.4%</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">2.9 dias</td>
+                        <td style="padding: 1rem; text-align: center; border-bottom: 1px solid #dee2e6;">R$ 75.8K</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Exportação de Dados -->
+    <div class="export-section">
+        <h3 style="color: var(--azul-principal); margin-bottom: 1.5rem;">📄 Exportar Relatórios</h3>
+        <button type="button" class="btn-export" onclick="exportarPDF()">
+            📄 Exportar PDF
+        </button>
+        <button type="button" class="btn-export" onclick="exportarExcel()">
+            📊 Exportar Excel
+        </button>
+        <button type="button" class="btn-export" onclick="exportarCSV()">
+            📋 Exportar CSV
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Funções JavaScript para interatividade do dashboard
+
+function aplicarFiltros() {
+    const periodo = document.getElementById('periodo').value;
+    const status = document.getElementById('status').value;
+    const cidade = document.getElementById('cidade').value;
+    
+    // Mostrar loading
+    document.querySelectorAll('.metric-value').forEach(el => {
+        el.textContent = '...';
+    });
+    
+    // Simular carregamento de dados
+    setTimeout(() => {
+        atualizarMetricas(periodo, status, cidade);
+        atualizarGraficos(periodo, status, cidade);
+    }, 1000);
+}
+
+function atualizarMetricas(periodo, status, cidade) {
+    // Simular dados diferentes baseados nos filtros
+    const dados = gerarDadosSimulados(periodo, status, cidade);
+    
+    document.getElementById('total-entregas').textContent = dados.totalEntregas.toLocaleString();
+    document.getElementById('taxa-sucesso').textContent = dados.taxaSucesso + '%';
+    document.getElementById('tempo-medio').textContent = dados.tempoMedio;
+    document.getElementById('receita-total').textContent = 'R$ ' + dados.receita;
+}
+
+function atualizarGraficos(periodo, status, cidade) {
+    // Em uma implementação real, aqui seria feita a atualização dos gráficos
+    console.log('Atualizando gráficos com filtros:', { periodo, status, cidade });
+}
+
+function gerarDadosSimulados(periodo, status, cidade) {
+    // Simular variação nos dados baseada nos filtros
+    const base = {
+        totalEntregas: 1247,
+        taxaSucesso: 98.2,
+        tempoMedio: '3.2',
+        receita: '89.5K'
+    };
+    
+    // Ajustar dados baseado no período
+    if (periodo === '7d') {
+        base.totalEntregas = Math.floor(base.totalEntregas / 4);
+        base.receita = '22.4K';
+    } else if (periodo === '90d') {
+        base.totalEntregas = base.totalEntregas * 3;
+        base.receita = '268.5K';
+    }
+    
+    return base;
+}
+
+function exportarPDF() {
+    alert('Funcionalidade de exportação PDF seria implementada aqui.\nEm produção, geraria um PDF com todos os gráficos e métricas.');
+}
+
+function exportarExcel() {
+    alert('Funcionalidade de exportação Excel seria implementada aqui.\nEm produção, geraria uma planilha com os dados detalhados.');
+}
+
+function exportarCSV() {
+    alert('Funcionalidade de exportação CSV seria implementada aqui.\nEm produção, geraria um arquivo CSV com os dados brutos.');
+}
+
+// Atualizar dados automaticamente a cada 5 minutos
+setInterval(() => {
+    aplicarFiltros();
+}, 300000);
+
+// Inicializar dashboard
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Dashboard de Análise de Dados carregado');
+});
+</script>
+{% endblock %}

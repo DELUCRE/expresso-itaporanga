@@ -18,6 +18,7 @@
                 <li><a href="{{ url_for('listar_entregas') }}" {% if request.endpoint == 'listar_entregas' %}class="active"{% endif %}>Entregas</a></li>
                 <li><a href="{{ url_for('nova_entrega') }}" {% if request.endpoint == 'nova_entrega' %}class="active"{% endif %}>Nova Entrega</a></li>
                 <li><a href="{{ url_for('relatorios') }}" {% if request.endpoint == 'relatorios' %}class="active"{% endif %}>Relatórios</a></li>
+                <li><a href="{{ url_for('analytics') }}" {% if request.endpoint == 'analytics' %}class="active"{% endif %}>Análise de Dados</a></li>
                 <li><a href="{{ url_for('logout') }}">Sair ({{ session.username }})</a></li>
             </ul>
         </nav>
