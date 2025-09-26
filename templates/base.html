@@ -56,30 +56,77 @@
     {% block extra_js %}{% endblock %}
     
     <script>
-    // Função para toggle do menu mobile
+    // Função para toggle do menu mobile com animações
     function toggleMobileMenu() {
         const navMenu = document.getElementById('nav-menu');
+        const menuToggle = document.querySelector('.mobile-menu-toggle');
+        
         navMenu.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+        
+        // Prevenir scroll do body quando menu está aberto
+        if (navMenu.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
     }
     
-    // Fechar menu ao clicar em um link
+    // Inicialização quando DOM carrega
     document.addEventListener('DOMContentLoaded', function() {
+        const navMenu = document.getElementById('nav-menu');
+        const menuToggle = document.querySelector('.mobile-menu-toggle');
         const navLinks = document.querySelectorAll('.nav-menu a');
+        
+        // Fechar menu ao clicar em um link
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
-                const navMenu = document.getElementById('nav-menu');
                 navMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
+                document.body.style.overflow = '';
             });
         });
         
         // Fechar menu ao clicar fora
         document.addEventListener('click', function(event) {
-            const navMenu = document.getElementById('nav-menu');
-            const menuToggle = document.querySelector('.mobile-menu-toggle');
-            
             if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
                 navMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
+                document.body.style.overflow = '';
             }
+        });
+        
+        // Fechar menu com tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Ajustar menu em mudança de orientação
+        window.addEventListener('orientationchange', function() {
+            setTimeout(() => {
+                if (window.innerWidth > 768) {
+                    navMenu.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }, 100);
+        });
+        
+        // Otimização para performance
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.innerWidth > 768) {
+                    navMenu.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }, 250);
         });
     });
     </script>

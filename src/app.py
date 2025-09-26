@@ -129,11 +129,16 @@ def gestao_login():
 @app.route('/gestao/login', methods=['POST'])
 def login():
     try:
-        username = request.form.get('username')
+        ip_address = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+        
+        username = sanitize_input(request.form.get('username'))
         password = request.form.get('password')
         
-        if not username or not password:
-            flash('Usuário e senha são obrigatórios', 'error')
+        # Validar entrada
+        is_valid, error_msg = validate_login_input(username, password)
+        if not is_valid:
+            record_login_attempt(ip_address)
+            flash(error_msg, 'error')
             return redirect(url_for('gestao_login'))
         
         usuario = Usuario.query.filter_by(username=username, ativo=True).first()
@@ -142,12 +147,22 @@ def login():
             session['user_id'] = usuario.id
             session['username'] = usuario.username
             session['perfil'] = usuario.perfil
+            session['login_time'] = datetime.now().isoformat()
+            session.permanent = True
+            
+            # Log de login bem-sucedido
+            app.logger.info(f"Login bem-sucedido para usuário: {username} de IP: {ip_address}")
+            
             return redirect(url_for('dashboard'))
         else:
+            # Registrar tentativa falhada
+            record_login_attempt(ip_address)
+            app.logger.warning(f"Tentativa de login falhada para usuário: {username} de IP: {ip_address}")
+            
             flash('Usuário ou senha inválidos', 'error')
             return redirect(url_for('gestao_login'))
     except Exception as e:
-        print(f"Erro no login: {e}")
+        app.logger.error(f"Erro no login: {e}")
         flash('Erro interno do servidor', 'error')
         return redirect(url_for('gestao_login'))
 
@@ -611,3 +626,126 @@ def analytics():
     if 'user_id' not in session:
         return redirect(url_for('gestao_login'))
     return render_template('gestao/analytics.html')
+
+
+# ============================================================================
+# MELHORIAS DE SEGURANÇA
+# ============================================================================
+
+# Configurações de segurança
+app.config['SESSION_COOKIE_SECURE'] = True  # HTTPS apenas
+app.config['SESSION_COOKIE_HTTPONLY'] = True  # Previne XSS
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Previne CSRF
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=2)  # Timeout de sessão
+
+# Headers de segurança
+@app.after_request
+def add_security_headers(response):
+    # Previne clickjacking
+    response.headers['X-Frame-Options'] = 'DENY'
+    
+    # Previne MIME type sniffing
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    
+    # Força HTTPS
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    
+    # Previne XSS
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    
+    # Content Security Policy
+    response.headers['Content-Security-Policy'] = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline'; "
+        "style-src 'self' 'unsafe-inline'; "
+        "img-src 'self' data: https:; "
+        "font-src 'self'; "
+        "connect-src 'self'"
+    )
+    
+    # Referrer Policy
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    
+    return response
+
+# Rate limiting básico (em memória)
+from collections import defaultdict
+from datetime import datetime, timedelta
+
+login_attempts = defaultdict(list)
+MAX_LOGIN_ATTEMPTS = 5
+LOCKOUT_DURATION = timedelta(minutes=15)
+
+def is_rate_limited(ip_address):
+    """Verifica se o IP está bloqueado por muitas tentativas de login"""
+    now = datetime.now()
+    attempts = login_attempts[ip_address]
+    
+    # Remove tentativas antigas
+    attempts[:] = [attempt for attempt in attempts if now - attempt < LOCKOUT_DURATION]
+    
+    return len(attempts) >= MAX_LOGIN_ATTEMPTS
+
+def record_login_attempt(ip_address):
+    """Registra uma tentativa de login"""
+    login_attempts[ip_address].append(datetime.now())
+
+# Middleware de segurança para rotas de gestão
+@app.before_request
+def security_middleware():
+    # Rate limiting para login
+    if request.endpoint == 'login' and request.method == 'POST':
+        ip_address = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+        if is_rate_limited(ip_address):
+            flash('Muitas tentativas de login. Tente novamente em 15 minutos.', 'error')
+            return redirect(url_for('gestao_login'))
+    
+    # Verificar sessão para rotas protegidas
+    protected_routes = ['dashboard', 'listar_entregas', 'nova_entrega', 'relatorios', 'analytics']
+    if request.endpoint in protected_routes:
+        if 'user_id' not in session:
+            return redirect(url_for('gestao_login'))
+        
+        # Verificar se a sessão não expirou
+        if 'login_time' in session:
+            login_time = datetime.fromisoformat(session['login_time'])
+            if datetime.now() - login_time > timedelta(hours=2):
+                session.clear()
+                flash('Sessão expirada. Faça login novamente.', 'info')
+                return redirect(url_for('gestao_login'))
+
+# Função para sanitizar entrada do usuário
+import html
+import re
+
+def sanitize_input(text):
+    """Sanitiza entrada do usuário para prevenir XSS"""
+    if not text:
+        return text
+    
+    # Remove tags HTML
+    text = html.escape(text)
+    
+    # Remove caracteres perigosos
+    text = re.sub(r'[<>"\']', '', text)
+    
+    return text.strip()
+
+# Validação de entrada mais rigorosa
+def validate_login_input(username, password):
+    """Valida entrada de login"""
+    if not username or not password:
+        return False, "Usuário e senha são obrigatórios"
+    
+    if len(username) > 50 or len(password) > 100:
+        return False, "Credenciais inválidas"
+    
+    # Verifica caracteres permitidos
+    if not re.match(r'^[a-zA-Z0-9_.-]+$', username):
+        return False, "Usuário contém caracteres inválidos"
+    
+    return True, ""
+
+# ============================================================================
+# FIM DAS MELHORIAS DE SEGURANÇA
+# ============================================================================
