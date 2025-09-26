@@ -61,6 +61,8 @@
         const navMenu = document.getElementById('nav-menu');
         const menuToggle = document.querySelector('.mobile-menu-toggle');
         
+        if (!navMenu || !menuToggle) return; // proteção contra erro
+
         navMenu.classList.toggle('active');
         menuToggle.classList.toggle('active');
         
@@ -77,7 +79,11 @@
         const navMenu = document.getElementById('nav-menu');
         const menuToggle = document.querySelector('.mobile-menu-toggle');
         const navLinks = document.querySelectorAll('.nav-menu a');
-        
+
+        if (!navMenu || !menuToggle) {
+            return; // se a página não tem esses elementos, não roda
+        }
+
         // Fechar menu ao clicar em um link
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -86,7 +92,7 @@
                 document.body.style.overflow = '';
             });
         });
-        
+
         // Fechar menu ao clicar fora
         document.addEventListener('click', function(event) {
             if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
@@ -95,7 +101,7 @@
                 document.body.style.overflow = '';
             }
         });
-        
+
         // Fechar menu com tecla ESC
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape' && navMenu.classList.contains('active')) {
@@ -104,7 +110,7 @@
                 document.body.style.overflow = '';
             }
         });
-        
+
         // Ajustar menu em mudança de orientação
         window.addEventListener('orientationchange', function() {
             setTimeout(() => {
@@ -115,7 +121,7 @@
                 }
             }, 100);
         });
-        
+
         // Otimização para performance
         let resizeTimer;
         window.addEventListener('resize', function() {
@@ -132,4 +138,3 @@
     </script>
 </body>
 </html>
-
