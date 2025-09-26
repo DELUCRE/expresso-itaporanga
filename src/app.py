@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import os
 
@@ -670,7 +670,6 @@ def add_security_headers(response):
 
 # Rate limiting básico (em memória)
 from collections import defaultdict
-from datetime import datetime, timedelta
 
 login_attempts = defaultdict(list)
 MAX_LOGIN_ATTEMPTS = 5
