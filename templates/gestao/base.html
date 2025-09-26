@@ -38,7 +38,16 @@
         {% block content %}{% endblock %}
     </main>
 
-    {% block extra_js %}{% endblock %}
+    {% block extra_js %}
+    <script>
+    // Proteção para futuros scripts
+    document.addEventListener("DOMContentLoaded", () => {
+        const sidebar = document.getElementById("sidebar");
+        if (sidebar) {
+            sidebar.classList.add("ativo");
+        }
+    });
+    </script>
+    {% endblock %}
 </body>
 </html>
-
